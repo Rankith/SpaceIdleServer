@@ -4,6 +4,7 @@
     <Name>SpaceIdleServer</Name>
     <RootNamespace>SpaceIdleServer</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <WebBrowserPort>56410</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -30,13 +31,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="App\admin.py" />
-    <Compile Include="App\apps.py" />
-    <Compile Include="App\migrations\__init__.py" />
-    <Compile Include="App\models.py" />
-    <Compile Include="App\tests.py" />
-    <Compile Include="App\views.py" />
-    <Compile Include="App\__init__.py" />
+    <Compile Include="app\admin.py" />
+    <Compile Include="app\apps.py" />
+    <Compile Include="app\migrations\__init__.py" />
+    <Compile Include="app\models.py" />
+    <Compile Include="app\tests.py" />
+    <Compile Include="app\views.py" />
+    <Compile Include="app\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="SpaceIdleServer\__init__.py" />
     <Compile Include="SpaceIdleServer\settings.py" />
@@ -44,14 +45,14 @@
     <Compile Include="SpaceIdleServer\wsgi.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\templates\App\index.html" />
+    <Content Include="app\templates\app\index.html" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\" />
-    <Folder Include="App\migrations\" />
-    <Folder Include="App\templates\" />
-    <Folder Include="App\templates\App\" />
+    <Folder Include="app\" />
+    <Folder Include="app\migrations\" />
+    <Folder Include="app\templates\" />
+    <Folder Include="app\templates\app\" />
     <Folder Include="SpaceIdleServer\" />
   </ItemGroup>
   <ItemGroup>
