@@ -25,7 +25,7 @@ SECRET_KEY = '3e90e4da-8fe8-4f72-8dbf-ddd9b8eec469'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['159.89.155.25','.jrsts.com','localhost','*']
+ALLOWED_HOSTS = ['localhost','143.198.139.220']
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
