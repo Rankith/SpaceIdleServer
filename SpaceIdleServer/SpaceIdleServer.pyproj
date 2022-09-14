@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\templates\app\index.html" />
+    <Content Include="db.sqlite3" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
