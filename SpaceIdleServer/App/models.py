@@ -6,6 +6,7 @@ class Player(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(blank=True)
     highest_sector = models.IntegerField(default=1)
+    nick_name = models.CharField(max_length=255,blank=True,default='')
     def __str__(self):
         return str(self.player_uuid)
 
@@ -22,6 +23,8 @@ class Activity(models.Model):
         ('Unlock','Unlock'),
         ('AIUpgrade','AIUpgrade'),
         ('GameOpened','GameOpened'),
+        ('ShardCompleted','ShardCompleted'),
+        ('InfiniteResource','InfiniteResource'),
         )
     type = models.CharField(max_length=50,choices=ACTIVITY_TYPES)
     details = models.CharField(max_length=255)
