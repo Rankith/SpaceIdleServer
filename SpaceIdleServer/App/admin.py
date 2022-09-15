@@ -6,7 +6,8 @@ class PlayerAdmin(admin.ModelAdmin):
     list_display=('id','player_uuid','date_created','last_updated','highest_sector')
 
 class ActivityAdmin(admin.ModelAdmin):
-    list_display=('id','player','type','details')
+    readonly_fields = ('date_created',)
+    list_display=('id','player','type','details','date_created')
     list_editable=('type','details')
     list_filter=('type',)
 
