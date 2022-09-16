@@ -20,11 +20,8 @@ def activity_log(request):
         player.last_updated = datetime.now()
         player.save()
 
-    #check for this activity
-    activity = Activity.objects.filter(player=player,type=data['type'],details=data['details'],details2=data['details2']).first()
-    #if its exactly the same, nuke it and remake
-    if activity == None:
-        activity.delete()
+    #check for this activity and delete if pure duplicate exists
+    Activity.objects.filter(player=player,type=data['type'],details=data['details'],details2=data['details2']).delete()
     activity = Activity(player=player,type=data['type'],details=data['details'],details2=data['details2'])
     activity.save()
 
