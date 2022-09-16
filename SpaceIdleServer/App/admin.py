@@ -3,13 +3,14 @@ from app.models import *
 # Register your models here.
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display=('id','player_uuid','date_created','last_updated','highest_sector')
+    list_display=('id','player_uuid','nick_name','date_created','last_updated','highest_sector')
 
 class ActivityAdmin(admin.ModelAdmin):
     readonly_fields = ('date_created',)
-    list_display=('id','player','type','details','date_created')
+    list_display=('id','player','type','details','details2','date_created')
     list_editable=('type','details')
     list_filter=('type',)
+    search_fields=('player__player_uuid','player__nick_name')
 
 
 admin.site.register(Player,PlayerAdmin)
