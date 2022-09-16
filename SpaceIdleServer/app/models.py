@@ -25,6 +25,7 @@ class Activity(models.Model):
         ('GameOpened','GameOpened'),
         ('ShardCompleted','ShardCompleted'),
         ('InfiniteResource','InfiniteResource'),
+        ('PrestigeReset','PrestigeReset'),
         )
     type = models.CharField(max_length=50,choices=ACTIVITY_TYPES)
     details = models.CharField(max_length=255)
