@@ -26,7 +26,14 @@ class Activity(models.Model):
         ('ShardCompleted','ShardCompleted'),
         ('InfiniteResource','InfiniteResource'),
         ('PrestigeReset','PrestigeReset'),
+        ('RedeemCode','RedeemCode'),
         )
     type = models.CharField(max_length=50,choices=ACTIVITY_TYPES)
     details = models.CharField(max_length=255)
     details2 = models.CharField(max_length=255,blank=True,default='')
+
+class Code(models.Model):
+    code = models.CharField(max_length=255)
+    date_start = models.DateTimeField(blank=True,null=True)
+    date_end = models.DateTimeField(blank=True,null=True)
+    reward = models.TextField()
