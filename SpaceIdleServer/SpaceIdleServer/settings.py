@@ -25,7 +25,7 @@ SECRET_KEY = '3e90e4da-8fe8-4f72-8dbf-ddd9b8eec469'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','143.198.139.220','api.spaceidle.xyz']
+ALLOWED_HOSTS = ['api.spaceidle.xyz']
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
@@ -57,6 +57,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'SpaceIdleServer.urls'
 
