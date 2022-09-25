@@ -12,6 +12,11 @@ class ActivityAdmin(admin.ModelAdmin):
     list_filter=('type',)
     search_fields=('player__player_uuid','player__nick_name')
 
+class CodeAdmin(admin.ModelAdmin):
+    list_display=('id','code','date_start','date_end','reward')
+    list_editable=('code','date_start','date_end','reward')
+
 
 admin.site.register(Player,PlayerAdmin)
 admin.site.register(Activity,ActivityAdmin)
+admin.site.register(Code,CodeAdmin)
