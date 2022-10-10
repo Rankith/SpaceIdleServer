@@ -16,7 +16,11 @@ class CodeAdmin(admin.ModelAdmin):
     list_display=('id','code','date_start','date_end','reward')
     list_editable=('code','date_start','date_end','reward')
 
+class CloudSaveAdmin(admin.ModelAdmin):
+    list_display=('id','player','save_data')
+
 
 admin.site.register(Player,PlayerAdmin)
 admin.site.register(Activity,ActivityAdmin)
 admin.site.register(Code,CodeAdmin)
+admin.site.register(CloudSave,CloudSaveAdmin)

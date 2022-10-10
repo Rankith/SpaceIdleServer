@@ -37,3 +37,8 @@ class Code(models.Model):
     date_start = models.DateTimeField(blank=True,null=True)
     date_end = models.DateTimeField(blank=True,null=True)
     reward = models.TextField()
+
+class CloudSave(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.SET_NULL,null=True)
+    save_data = models.TextField()
+    timestamp = models.DateTimeField(auto_now=True)
