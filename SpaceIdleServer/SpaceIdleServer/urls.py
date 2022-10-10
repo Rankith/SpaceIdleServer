@@ -26,4 +26,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('activity_log/', views.activity_log, name='activity_log'),
     path('enter_code/', views.enter_code, name='enter_code'),
+    path('cloud_save/', views.cloud_save, name='cloud_save'),
 ]

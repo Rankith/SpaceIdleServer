@@ -69,3 +69,25 @@ def enter_code(request):
         return JsonResponse(json.loads(code.reward))
     else:
          return HttpResponse(status=400)
+     
+
+@csrf_exempt
+def cloud_save(request):
+    data = json.loads(request.body.decode("utf-8"))
+
+    #lookup player
+    player = Player.objects.filter(player_uuid=data['player_uuid']).first()
+    if player == None:
+        #doesnt exist, make one
+        player = Player(player_uuid=data['player_uuid'],last_updated=datetime.now())
+        player.save()
+
+    #lookup cloud save
+    cs = CloudSave.objects.filter(player=player).first()
+    if cs == None:
+        cs = CloudSave(player=player,save_data=data['save_data'])
+    else:
+        cs.save_data= data['save_data']
+    cs.save()
+
+    return HttpResponse(status=200)
