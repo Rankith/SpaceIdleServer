@@ -27,4 +27,7 @@ urlpatterns = [
     path('activity_log/', views.activity_log, name='activity_log'),
     path('enter_code/', views.enter_code, name='enter_code'),
     path('cloud_save/', views.cloud_save, name='cloud_save'),
+    path('get_cloud_save/', views.get_cloud_save, name='get_cloud_save'),
+    path('cloud_register/', views.cloud_register, name='cloud_register'),
+    path('cloud_login/', views.cloud_login, name='cloud_login'),
 ]
