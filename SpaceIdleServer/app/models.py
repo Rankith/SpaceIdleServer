@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Player(models.Model):
@@ -7,6 +8,7 @@ class Player(models.Model):
     last_updated = models.DateTimeField(blank=True)
     highest_sector = models.IntegerField(default=1)
     nick_name = models.CharField(max_length=255,blank=True,default='')
+    account = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,default=None)
     def __str__(self):
         return str(self.player_uuid)
 
@@ -39,6 +41,12 @@ class Code(models.Model):
     reward = models.TextField()
 
 class CloudSave(models.Model):
+    account = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    save_data = models.TextField()
+    total_playtime = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now=True)
+
+class CloudSaveOLD(models.Model):
     player = models.ForeignKey(Player, on_delete=models.SET_NULL,null=True)
     save_data = models.TextField()
     timestamp = models.DateTimeField(auto_now=True)

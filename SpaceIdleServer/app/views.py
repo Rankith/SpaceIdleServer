@@ -6,6 +6,8 @@ import json
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 # Create your views here.
 @csrf_exempt
 def activity_log(request):
@@ -74,20 +76,78 @@ def enter_code(request):
 @csrf_exempt
 def cloud_save(request):
     data = json.loads(request.body.decode("utf-8"))
+    #check if already exists
+    kwargs = {'username': data['username']}
+    try:
+        user = get_user_model().objects.get(**kwargs)
+        if user.check_password(data['password']):
+            #save it
+            cs = CloudSave.objects.filter(account=user).first()
+            if cs == None:
+                cs = CloudSave(account=user,save_data=data['save_data'],total_playtime=data['total_playtime'])
+            else:
+                cs.save_data= data['save_data']
+                cs.total_playtime= data['total_playtime']
+            cs.save()
+            return HttpResponse(status=200)
+    except:
+        pass
 
-    #lookup player
+    return HttpResponse(status=404)
+
+@csrf_exempt
+def get_cloud_save(request):
+    data = json.loads(request.body.decode("utf-8"))
+    #check if already exists
+    kwargs = {'username': data['username']}
+    try:
+        user = get_user_model().objects.get(**kwargs)
+        if user.check_password(data['password']):
+            #grab save
+            cs = CloudSave.objects.filter(account=user).first()
+            return JsonResponse({"save_data":cs.save_data,"total_playtime":cs.total_playtime,"timestamp":cs.timestamp})
+    except:
+        pass
+
+    return HttpResponse(status=404)
+
+@csrf_exempt
+def cloud_register(request):
+    data = json.loads(request.body.decode("utf-8"))
+    #check if already exists
+    if User.objects.filter(username=data['username']).first() != None:
+        return JsonResponse({"result":"User Already Exists"})
+
+    new_user = User.objects.create_user(username=data['username'],password=data['password'])
+    new_user.save()
+
+    #attach account just for looking up later
     player = Player.objects.filter(player_uuid=data['player_uuid']).first()
     if player == None:
         #doesnt exist, make one
-        player = Player(player_uuid=data['player_uuid'],last_updated=datetime.now())
+        player = Player(player_uuid=data['player_uuid'],last_updated=datetime.now(),account=user)
+        player.save()
+    else:
+        player.last_updated = datetime.now()
+        player.account = new_user
         player.save()
 
-    #lookup cloud save
-    cs = CloudSave.objects.filter(player=player).first()
-    if cs == None:
-        cs = CloudSave(player=player,save_data=data['save_data'])
-    else:
-        cs.save_data= data['save_data']
-    cs.save()
+    return JsonResponse({"result":"Account Created"})
 
-    return HttpResponse(status=200)
+@csrf_exempt
+def cloud_login(request):
+    data = json.loads(request.body.decode("utf-8"))
+    #check if already exists
+    kwargs = {'username': data['username']}
+    try:
+        user = get_user_model().objects.get(**kwargs)
+        if user.check_password(data['password']):
+            #now get the user id
+            player = Player.objects.filter(account=user).first()
+            return JsonResponse({"result":"Success","uuid":player.player_uuid})   
+        else:
+            return JsonResponse({"result":"Invalid Password"})   
+    except:
+        return JsonResponse({"result":"Invalid Username"})
+
+    return JsonResponse({"result":"Unknown Error"})
