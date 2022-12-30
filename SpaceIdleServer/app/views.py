@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from datetime import datetime
 from app.models import *
-from django.db.models import Q
+from django.db.models import Q, F, Func, ExpressionWrapper, DurationField, Aggregate, FloatField, Avg
 import json
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -151,3 +151,26 @@ def cloud_login(request):
         return JsonResponse({"result":"Invalid Username"})
 
     return JsonResponse({"result":"Unknown Error"})
+
+def progress_graph(request):
+    stats = Activity.objects.filter(type='SectorCleared').values('details2').order_by('details2').annotate(time_taken=Avg(ExpressionWrapper(F('date_created')-F('player__date_created'),output_field=DurationField())))
+    labels = []
+    values = []
+    index = 0
+    for s in stats:
+        labels.append(s['details2'])
+        values.append(round(s['time_taken'].total_seconds()/60/60,2))
+    # unpack dict keys / values into two lists
+    #labels, values = zip(*stats)
+
+    context = {
+        "labels": labels,
+        "values": values,
+    }
+    return render(request, "app/progress_graph.html", context)
+
+class Median(Aggregate):
+        function = 'PERCENTILE_CONT'
+        name = 'median'
+        output_field = FloatField()
+        template = '%(function)s(0.5) WITHIN GROUP (ORDER BY %(expressions)s)'
