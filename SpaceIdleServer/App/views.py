@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from datetime import datetime
 from app.models import *
-from django.db.models import Q, F, Func, ExpressionWrapper, DurationField, Aggregate, FloatField, Avg
+from django.db.models import Q, F, Func, ExpressionWrapper, DurationField, Aggregate, FloatField, Avg, IntegerField
+from django.db.models.functions import Cast
 import json
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -153,7 +154,7 @@ def cloud_login(request):
     return JsonResponse({"result":"Unknown Error"})
 
 def progress_graph(request):
-    stats = Activity.objects.filter(type='SectorCleared').values('details2').order_by('details2').annotate(time_taken=Avg(ExpressionWrapper(F('date_created')-F('player__date_created'),output_field=DurationField())))
+    stats = Activity.objects.filter(type='SectorCleared').annotate(details_int=Cast('details2',IntegerField())).values('details2').order_by('details_int').annotate(time_taken=Avg(ExpressionWrapper(F('date_created')-F('player__date_created'),output_field=DurationField())))
     labels = []
     values = []
     index = 0
