@@ -155,7 +155,7 @@ def cloud_login(request):
 
 def progress_graph(request):
     date_filter = request.GET.get('date_start','2022-06-01')
-    stats = Activity.objects.filter(type='SectorCleared',player__date_created__gte=date_filter).exclude(player_uuid='909dcb16-bfb7-4f2d-9519-1ccec46bcd38').annotate(details_int=Cast('details2',IntegerField())).values('details2').order_by('details_int').annotate(time_taken=Avg(ExpressionWrapper(F('date_created')-F('player__date_created'),output_field=DurationField())))
+    stats = Activity.objects.filter(type='SectorCleared',player__date_created__gte=date_filter).exclude(player__player_uuid='909dcb16-bfb7-4f2d-9519-1ccec46bcd38').annotate(details_int=Cast('details2',IntegerField())).values('details2').order_by('details_int').annotate(time_taken=Avg(ExpressionWrapper(F('date_created')-F('player__date_created'),output_field=DurationField())))
     labels = []
     values = []
     index = 0
