@@ -50,6 +50,7 @@
     <Compile Include="SpaceIdleServer\wsgi.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\templates\app\sector_graph.html" />
     <Content Include="app\templates\app\abandon_graph.html" />
     <Content Include="app\templates\app\progress_graph.html" />
     <Content Include="db.sqlite3" />
