@@ -192,6 +192,27 @@ def abandon_graph(request):
     }
     return render(request, "app/abandon_graph.html", context)
 
+#sector active
+def abandon_graph(request):
+    recency_required = request.GET.get('recency_required','7')
+    date_start = request.GET.get('date_start','2022-06-01')
+    date_compare = datetime.now() + timedelta(days=-int(recency_required))
+    stats = Player.objects.filter(last_updated__gte=date_compare,date_created__gte=date_start).exclude(highest_sector=1).exclude(player_uuid='909dcb16-bfb7-4f2d-9519-1ccec46bcd38').values('highest_sector').order_by('highest_sector').annotate(amount=Count('highest_sector'))
+    labels = []
+    values = []
+    index = 0
+    for s in stats:
+        labels.append(s['highest_sector'])
+        values.append(s['amount'])
+    # unpack dict keys / values into two lists
+    #labels, values = zip(*stats)
+
+    context = {
+        "labels": labels,
+        "values": values,
+    }
+    return render(request, "app/sector_graph.html", context)
+
 class Median(Aggregate):
         function = 'PERCENTILE_CONT'
         name = 'median'
