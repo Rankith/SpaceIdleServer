@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from datetime import datetime
+from datetime import datetime, timedelta
 from app.models import *
-from django.db.models import Q, F, Func, ExpressionWrapper, DurationField, Aggregate, FloatField, Avg, IntegerField
+from django.db.models import Q, F, Func, ExpressionWrapper, DurationField, Aggregate, FloatField, Avg, IntegerField, Count
 from django.db.models.functions import Cast
 import json
 from django.http import HttpResponse, JsonResponse
@@ -170,6 +170,27 @@ def progress_graph(request):
         "values": values,
     }
     return render(request, "app/progress_graph.html", context)
+
+#sector abandaoned
+def abandon_graph(request):
+    days_stagnant = request.GET.get('days_stagnant','15')
+    date_start = request.GET.get('date_start','2022-06-01')
+    date_compare = datetime.now() + timedelta(days=-int(days_stagnant))
+    stats = Player.objects.filter(last_updated__lte=date_compare,date_created__gte=date_start).exclude(highest_sector=1,player_uuid='909dcb16-bfb7-4f2d-9519-1ccec46bcd38').values('highest_sector').order_by('highest_sector').annotate(amount=Count('highest_sector'))
+    labels = []
+    values = []
+    index = 0
+    for s in stats:
+        labels.append(s['highest_sector'])
+        values.append(['amount'])
+    # unpack dict keys / values into two lists
+    #labels, values = zip(*stats)
+
+    context = {
+        "labels": labels,
+        "values": values,
+    }
+    return render(request, "app/abandon_graph.html", context)
 
 class Median(Aggregate):
         function = 'PERCENTILE_CONT'

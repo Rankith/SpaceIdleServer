@@ -31,4 +31,5 @@ urlpatterns = [
     path('cloud_register/', views.cloud_register, name='cloud_register'),
     path('cloud_login/', views.cloud_login, name='cloud_login'),
     path('progress_graph/', views.progress_graph, name='progress_graph'),
+    path('abandon_graph/', views.abandon_graph, name='abandon_graph'),
 ]
